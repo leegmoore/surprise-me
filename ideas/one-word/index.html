@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>One Word</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: Georgia, serif;
+      background: #fafafa;
+      color: #222;
+      padding: 2rem;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 600px;
+    }
+
+    .date {
+      font-size: 0.875rem;
+      color: #888;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .word {
+      font-size: 4rem;
+      font-weight: normal;
+      font-style: italic;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .prompt {
+      font-size: 1.125rem;
+      color: #666;
+      margin-bottom: 3rem;
+    }
+
+    .instruction {
+      font-size: 0.875rem;
+      color: #999;
+      max-width: 400px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 480px) {
+      .word {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="date" id="date"></div>
+    <div class="word" id="word"></div>
+    <div class="prompt">Write something with this word.</div>
+    <div class="instruction">
+      A sentence. A paragraph. A poem. A lie.<br>
+      There's no submission. No one's watching.<br>
+      Just write.
+    </div>
+  </div>
+
+  <script>
+    const words = [
+      "hinge", "almost", "seventeen", "hollow", "rust",
+      "borrowed", "threshold", "mercy", "static", "bone",
+      "tender", "elsewhere", "noon", "heavy", "ghost",
+      "before", "salt", "remain", "unlikely", "margin",
+      "flicker", "between", "silence", "worn", "after",
+      "ordinary", "distance", "pocket", "linger", "spare",
+      "shadow", "particular", "held", "still", "underneath",
+      "patience", "corner", "given", "half", "small",
+      "window", "already", "careful", "belong", "surface",
+      "quiet", "instead", "kept", "minor", "warm",
+      "against", "waiting", "enough", "mostly", "near",
+      "certain", "missing", "early", "within", "plain",
+      "sudden", "perhaps", "along", "slightly", "once"
+    ];
+
+    function getDayOfYear() {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), 0, 0);
+      const diff = now - start;
+      const oneDay = 1000 * 60 * 60 * 24;
+      return Math.floor(diff / oneDay);
+    }
+
+    function formatDate() {
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date().toLocaleDateString('en-US', options);
+    }
+
+    // Get today's word based on day of year
+    const dayOfYear = getDayOfYear();
+    const wordIndex = dayOfYear % words.length;
+    const todaysWord = words[wordIndex];
+
+    document.getElementById('date').textContent = formatDate();
+    document.getElementById('word').textContent = todaysWord;
+  </script>
+</body>
+</html>

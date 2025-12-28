@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ghost</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .phone {
+      width: 100%;
+      max-width: 375px;
+      background: #0f0f1a;
+      border-radius: 40px;
+      padding: 20px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .screen {
+      background: #1a1a2e;
+      border-radius: 25px;
+      min-height: 600px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .header h1 {
+      font-size: 1.5rem;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      color: #8b8bab;
+    }
+
+    .stage {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+    }
+
+    .stage.active {
+      display: flex;
+    }
+
+    /* Stage 1: Waiting */
+    .waiting {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .ghost-icon {
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.05); opacity: 1; }
+    }
+
+    .waiting p {
+      color: #8b8bab;
+      font-size: 0.875rem;
+      line-height: 1.8;
+    }
+
+    .simulate-btn {
+      margin-top: 2rem;
+      padding: 0.75rem 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #8b8bab;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      border-radius: 20px;
+    }
+
+    .simulate-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Stage 2: Notification */
+    .notification {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .notif-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.5rem;
+      width: 100%;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .notif-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .notif-avatar {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    .notif-name {
+      font-weight: 500;
+    }
+
+    .notif-time {
+      font-size: 0.75rem;
+      color: #8b8bab;
+    }
+
+    .notif-body {
+      color: #ccc;
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .play-btn {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    /* Stage 3: Playing */
+    .playing {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .waveform {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      height: 60px;
+      margin-bottom: 2rem;
+    }
+
+    .wave-bar {
+      width: 4px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 2px;
+      animation: wave 0.5s ease-in-out infinite alternate;
+    }
+
+    .wave-bar:nth-child(1) { height: 20px; animation-delay: 0s; }
+    .wave-bar:nth-child(2) { height: 35px; animation-delay: 0.1s; }
+    .wave-bar:nth-child(3) { height: 50px; animation-delay: 0.2s; }
+    .wave-bar:nth-child(4) { height: 35px; animation-delay: 0.3s; }
+    .wave-bar:nth-child(5) { height: 55px; animation-delay: 0.4s; }
+    .wave-bar:nth-child(6) { height: 40px; animation-delay: 0.5s; }
+    .wave-bar:nth-child(7) { height: 25px; animation-delay: 0.6s; }
+    .wave-bar:nth-child(8) { height: 45px; animation-delay: 0.7s; }
+    .wave-bar:nth-child(9) { height: 30px; animation-delay: 0.8s; }
+
+    @keyframes wave {
+      to { height: 20px; }
+    }
+
+    .playing p {
+      color: #8b8bab;
+      font-size: 0.875rem;
+    }
+
+    .from-name {
+      color: #fff;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .transcript {
+      font-style: italic;
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      line-height: 1.6;
+      color: #ccc;
+    }
+
+    .reply-btn {
+      margin-top: 2rem;
+      padding: 1rem 2rem;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #8b8bab;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+
+    /* Concept explanation */
+    .concept {
+      margin-top: 3rem;
+      text-align: center;
+      max-width: 500px;
+    }
+
+    .concept h2 {
+      font-size: 1rem;
+      font-weight: 400;
+      color: #8b8bab;
+      margin-bottom: 1rem;
+    }
+
+    .concept p {
+      font-size: 0.875rem;
+      color: #666;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="screen">
+      <div class="header">
+        <h1>GHOST</h1>
+      </div>
+
+      <!-- Stage 1: Waiting for ghost -->
+      <div class="stage active" id="stage1">
+        <div class="waiting">
+          <div class="ghost-icon">👻</div>
+          <p>
+            No ghosts right now.<br>
+            When a friend sends you one,<br>
+            it'll arrive when you least expect it.
+          </p>
+          <button class="simulate-btn" onclick="simulateGhost()">
+            Simulate incoming ghost
+          </button>
+        </div>
+      </div>
+
+      <!-- Stage 2: Ghost arrived -->
+      <div class="stage" id="stage2">
+        <div class="notification">
+          <div class="notif-card">
+            <div class="notif-header">
+              <div class="notif-avatar">S</div>
+              <div>
+                <div class="notif-name">Sarah</div>
+                <div class="notif-time">Sent 3 hours ago</div>
+              </div>
+            </div>
+            <div class="notif-body">
+              Left you a voice note. It arrived just now.
+            </div>
+            <button class="play-btn" onclick="playGhost()">
+              ▶ Listen
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 3: Playing -->
+      <div class="stage" id="stage3">
+        <div class="playing">
+          <div class="waveform">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+          </div>
+          <div class="from-name">Sarah</div>
+          <p>Recorded 3 hours ago</p>
+          <div class="transcript">
+            "Hey, I was just walking past that coffee shop we used to go to after class. Remember when you spilled that entire latte on yourself before the interview? Anyway, I miss you. That's all. Okay, bye."
+          </div>
+          <button class="reply-btn" onclick="restart()">
+            Send a ghost back
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="concept">
+    <h2>The Concept</h2>
+    <p>
+      Ghost is async voice notes with delayed delivery.
+      You record a message for a friend. They get it later —
+      not immediately, not on a schedule, just... sometime.
+      Like a letter. Like a surprise. Like hearing from someone
+      exactly when you needed to.
+    </p>
+  </div>
+
+  <script>
+    function simulateGhost() {
+      document.getElementById('stage1').classList.remove('active');
+      document.getElementById('stage2').classList.add('active');
+    }
+
+    function playGhost() {
+      document.getElementById('stage2').classList.remove('active');
+      document.getElementById('stage3').classList.add('active');
+    }
+
+    function restart() {
+      document.getElementById('stage3').classList.remove('active');
+      document.getElementById('stage1').classList.add('active');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tiny Museum</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Georgia, 'Times New Roman', serif;
+      background: #f5f5f0;
+      color: #333;
+    }
+
+    .museum {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .logo {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: #999;
+    }
+
+    .date {
+      font-size: 0.875rem;
+      color: #999;
+      margin-top: 0.5rem;
+    }
+
+    .exhibit {
+      margin-bottom: 3rem;
+    }
+
+    .exhibit-number {
+      font-size: 0.75rem;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 1rem;
+    }
+
+    .exhibit-frame {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .exhibit-type {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #999;
+      margin-bottom: 1rem;
+    }
+
+    .exhibit-title {
+      font-size: 1.75rem;
+      font-weight: normal;
+      font-style: italic;
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .exhibit-meta {
+      font-size: 0.875rem;
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+
+    .exhibit-description {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #444;
+    }
+
+    .exhibit-image {
+      width: 100%;
+      height: 300px;
+      background: #e5e5e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .placard {
+      background: #fafaf5;
+      border-left: 3px solid #ccc;
+      padding: 1rem 1.5rem;
+      font-size: 0.875rem;
+      color: #666;
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 4rem;
+      font-size: 0.875rem;
+      color: #999;
+    }
+
+    .footer a {
+      color: #666;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    .nav button {
+      background: none;
+      border: 1px solid #ccc;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .nav button:hover {
+      border-color: #999;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="museum">
+    <div class="header">
+      <div class="logo">Tiny Museum</div>
+      <div class="date" id="date"></div>
+    </div>
+
+    <div class="exhibit">
+      <div class="exhibit-number" id="exhibit-number">Exhibit No. 1</div>
+      <div class="exhibit-frame">
+        <div class="exhibit-type" id="exhibit-type">Artwork</div>
+        <div class="exhibit-image" id="exhibit-image">🎨</div>
+        <h1 class="exhibit-title" id="exhibit-title">Loading...</h1>
+        <div class="exhibit-meta" id="exhibit-meta"></div>
+        <p class="exhibit-description" id="exhibit-description"></p>
+      </div>
+      <div class="placard" id="placard"></div>
+    </div>
+
+    <div class="footer">
+      <p>One thing per day. That's enough.</p>
+      <div class="nav">
+        <button onclick="previous()">← Yesterday</button>
+        <button onclick="next()">Tomorrow →</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const exhibits = [
+      {
+        type: "Artwork",
+        icon: "🌊",
+        title: "The Great Wave off Kanagawa",
+        meta: "Katsushika Hokusai, c. 1831",
+        description: "A woodblock print depicting enormous waves threatening boats near Mount Fuji. Despite its name, the mountain is the stable point — small, distant, enduring. The wave is chaos. The mountain is time.",
+        placard: "Look at the size of the wave compared to Mount Fuji. Hokusai made the eternal mountain tiny and the momentary wave enormous. What does that say about perspective?"
+      },
+      {
+        type: "Word",
+        icon: "📖",
+        title: "Sonder",
+        meta: "Neologism, The Dictionary of Obscure Sorrows",
+        description: "The realization that each random passerby is living a life as vivid and complex as your own — populated with their own ambitions, friends, routines, worries and inherited craziness.",
+        placard: "Next time you're in a crowd, pick one person. They have a mother who named them. A worst day. A secret hope. You'll never know any of it."
+      },
+      {
+        type: "Historical Moment",
+        icon: "📅",
+        title: "The Day the Music Burned",
+        meta: "June 1, 2008 — Universal Studios backlot",
+        description: "A fire destroyed a warehouse containing master recordings of an estimated 500,000+ songs. Works by Chuck Berry, Aretha Franklin, Elton John, Nirvana, and countless others — the original tapes, irreplaceable. Universal kept it quiet for over a decade.",
+        placard: "The public didn't learn the extent until 2019. How many other losses are we not told about? What have we lost that we don't even know we've lost?"
+      },
+      {
+        type: "Scientific Concept",
+        icon: "🔬",
+        title: "The Overview Effect",
+        meta: "Coined by Frank White, 1987",
+        description: "A cognitive shift reported by astronauts when viewing Earth from space. Seeing the planet as a fragile, borderless whole triggers a sense of responsibility for its protection and a feeling that national boundaries are arbitrary.",
+        placard: "Every astronaut who has looked back at Earth has struggled to describe it. 'You develop an instant global consciousness' said Edgar Mitchell. What would change if everyone could see it?"
+      },
+      {
+        type: "Artwork",
+        icon: "🖼️",
+        title: "Nighthawks",
+        meta: "Edward Hopper, 1942",
+        description: "Four people in a late-night diner, none of them talking to each other. The street outside is empty. There's no visible door to the diner — you can see in, but the people inside seem trapped in their own loneliness.",
+        placard: "Hopper denied it was about loneliness. 'I didn't see it as particularly lonely,' he said. But he also said 'unconsciously, probably, I was painting the loneliness of a large city.' Notice there's no way in or out."
+      },
+      {
+        type: "Phenomenon",
+        icon: "🌌",
+        title: "The Pale Blue Dot",
+        meta: "Photo taken by Voyager 1, February 14, 1990",
+        description: "At Carl Sagan's request, Voyager 1 turned its camera back toward Earth from 3.7 billion miles away. Earth appears as a tiny speck, less than a single pixel, suspended in a beam of sunlight.",
+        placard: "Sagan: 'Look again at that dot. That's here. That's home. That's us. On it everyone you love, everyone you know, everyone you ever heard of, every human being who ever was, lived out their lives.'"
+      },
+      {
+        type: "Word",
+        icon: "📖",
+        title: "Hiraeth",
+        meta: "Welsh, untranslatable",
+        description: "A homesickness for a home you cannot return to, or that maybe never existed. A longing for a place, a time, a feeling that lives only in memory — or imagination.",
+        placard: "Some say it's uniquely Welsh, tied to centuries of diaspora. But the feeling is universal. You've felt it. You just didn't have a word for it."
+      },
+      {
+        type: "Artwork",
+        icon: "✨",
+        title: "Rain Room",
+        meta: "Random International, 2012",
+        description: "A 100-square-meter field of falling water that pauses wherever you stand. Motion sensors detect your presence and stop the rain directly above you. You walk through a downpour without getting wet.",
+        placard: "The piece asks: what does it mean to control your environment absolutely? Is immunity from discomfort something to seek, or something to question?"
+      },
+      {
+        type: "Historical Moment",
+        icon: "📅",
+        title: "When We Almost Ended",
+        meta: "September 26, 1983",
+        description: "Soviet officer Stanislav Petrov received an alert that the US had launched five nuclear missiles. Protocol required immediate retaliation. Petrov judged it a false alarm and did not report it up the chain. He was right.",
+        placard: "One person. One judgment call. The system said 'launch.' He said 'wait.' That's it. That's the margin between the world that exists and the one that doesn't."
+      },
+      {
+        type: "Scientific Concept",
+        icon: "🧬",
+        title: "Genetic Memory in Mice",
+        meta: "Emory University, 2013",
+        description: "Researchers trained mice to fear a cherry blossom scent, then bred them. Their offspring — who had never encountered the scent — showed fear responses to it. The memory, somehow, had been inherited.",
+        placard: "This challenges everything we thought about inheritance. If fear can be passed down, what else can? What ancient terrors might still live in your DNA?"
+      }
+    ];
+
+    let currentOffset = 0;
+
+    function getDayOfYear() {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), 0, 0);
+      const diff = now - start;
+      const oneDay = 1000 * 60 * 60 * 24;
+      return Math.floor(diff / oneDay);
+    }
+
+    function formatDate(offset = 0) {
+      const date = new Date();
+      date.setDate(date.getDate() + offset);
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      return date.toLocaleDateString('en-US', options);
+    }
+
+    function render() {
+      const dayOfYear = getDayOfYear() + currentOffset;
+      const index = ((dayOfYear % exhibits.length) + exhibits.length) % exhibits.length;
+      const exhibit = exhibits[index];
+
+      document.getElementById('date').textContent = formatDate(currentOffset);
+      document.getElementById('exhibit-number').textContent = `Exhibit No. ${index + 1}`;
+      document.getElementById('exhibit-type').textContent = exhibit.type;
+      document.getElementById('exhibit-image').textContent = exhibit.icon;
+      document.getElementById('exhibit-title').textContent = exhibit.title;
+      document.getElementById('exhibit-meta').textContent = exhibit.meta;
+      document.getElementById('exhibit-description').textContent = exhibit.description;
+      document.getElementById('placard').textContent = exhibit.placard;
+    }
+
+    function previous() {
+      currentOffset--;
+      render();
+    }
+
+    function next() {
+      currentOffset++;
+      render();
+    }
+
+    render();
+  </script>
+</body>
+</html>
