@@ -1,0 +1,110 @@
+{
+  "version": "0.1",
+  "nudges": [
+    {
+      "id": 1,
+      "text": "Find the oldest thing within arm's reach. Imagine the first person who touched it.",
+      "time": "2-3 min",
+      "energy": "low",
+      "location": "anywhere"
+    },
+    {
+      "id": 2,
+      "text": "Go outside. Turn left. Walk for exactly 3 minutes. Then come back.",
+      "time": "7 min",
+      "energy": "low",
+      "location": "anywhere with an outside"
+    },
+    {
+      "id": 3,
+      "text": "Touch the coldest surface you can find. Then the warmest.",
+      "time": "1-2 min",
+      "energy": "low",
+      "location": "anywhere"
+    },
+    {
+      "id": 4,
+      "text": "Stand at a window. Describe what you see out loud, as if to someone who can't see it.",
+      "time": "2-3 min",
+      "energy": "low",
+      "location": "anywhere with a window"
+    },
+    {
+      "id": 5,
+      "text": "Find something you own that's broken or damaged. Hold it for a minute.",
+      "time": "2 min",
+      "energy": "low",
+      "location": "home"
+    },
+    {
+      "id": 6,
+      "text": "Open a drawer or cabinet you rarely open. Look at what's inside for 30 seconds. Close it.",
+      "time": "1 min",
+      "energy": "low",
+      "location": "home"
+    },
+    {
+      "id": 7,
+      "text": "Listen. Identify 5 distinct sounds. Say each one out loud as you hear it.",
+      "time": "2-5 min",
+      "energy": "low",
+      "location": "anywhere"
+    },
+    {
+      "id": 8,
+      "text": "Walk to the furthest corner of wherever you are. Stand there for 60 seconds.",
+      "time": "2 min",
+      "energy": "low",
+      "location": "anywhere"
+    },
+    {
+      "id": 9,
+      "text": "Pick up the nearest book. Open to page 50. Read the first full sentence out loud.",
+      "time": "1 min",
+      "energy": "low",
+      "location": "anywhere with books"
+    },
+    {
+      "id": 10,
+      "text": "Find something blue. Then find something that's almost the same blue, but not quite.",
+      "time": "2-3 min",
+      "energy": "low",
+      "location": "anywhere"
+    },
+    {
+      "id": 11,
+      "text": "Go outside. Watch the first moving thing you see until it's gone.",
+      "time": "1-10 min",
+      "energy": "low",
+      "location": "anywhere with an outside"
+    },
+    {
+      "id": 12,
+      "text": "Look at your ceiling. Keep looking until you notice something you've never noticed before.",
+      "time": "1-3 min",
+      "energy": "low",
+      "location": "indoors"
+    },
+    {
+      "id": 13,
+      "text": "Find the ugliest thing in the room. Look at it for 30 seconds without looking away.",
+      "time": "1 min",
+      "energy": "low",
+      "location": "anywhere"
+    },
+    {
+      "id": 14,
+      "text": "Find a mirror. Make eye contact with yourself for 30 seconds.",
+      "time": "1 min",
+      "energy": "low",
+      "location": "anywhere with a mirror"
+    },
+    {
+      "id": 15,
+      "text": "Find something you forgot you owned. Hold it. Try to remember when you got it.",
+      "time": "3-5 min",
+      "energy": "low",
+      "location": "home"
+    }
+  ]
+}
