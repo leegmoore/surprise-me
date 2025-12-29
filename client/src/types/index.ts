@@ -11,7 +11,7 @@ export interface Agent {
   temperature?: number;
   maxTokens?: number;
   isActive: boolean;
-  createdAt: Date;
+  createdAt: string; // ISO string for JSON serialization
 }
 
 export interface Message {
@@ -20,7 +20,7 @@ export interface Message {
   agentId: string | null; // null for user messages
   role: 'user' | 'assistant' | 'system';
   content: string;
-  createdAt: Date;
+  createdAt: string; // ISO string for JSON serialization
   isStreaming?: boolean;
   error?: string;
 }
@@ -30,8 +30,8 @@ export interface Conversation {
   title: string;
   agentIds: string[];
   messages: Message[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string; // ISO string for JSON serialization
+  updatedAt: string; // ISO string for JSON serialization
   isMultiAgent: boolean;
 }
 
@@ -50,10 +50,53 @@ export interface ApiKeyConfig {
 }
 
 export interface StreamEvent {
-  type: 'start' | 'delta' | 'end' | 'error';
-  conversationId: string;
-  agentId: string;
-  messageId: string;
+  type: 'start' | 'content' | 'tool_call' | 'tool_result' | 'end' | 'error' | 'done';
+  conversationId?: string;
+  agentId?: string;
+  messageId?: string;
   content?: string;
-  error?: string;
+  tool?: string;
+  args?: Record<string, unknown>;
+  result?: string;
+  message?: string;
+}
+
+export interface ChatRequest {
+  message: string;
+  agentId: string;
+  agent: {
+    provider: AgentProvider;
+    model: string;
+    systemPrompt?: string;
+    temperature?: number;
+    maxTokens?: number;
+  };
+  history: Array<{
+    role: 'user' | 'assistant' | 'system';
+    content: string;
+  }>;
+  apiKeys: ApiKeyConfig;
+  stream?: boolean;
+}
+
+export interface ChatResponse {
+  content: string;
+  success: boolean;
+}
+
+export interface ServerInfo {
+  name: string;
+  version: string;
+  capabilities: {
+    streaming: boolean;
+    toolCalling: boolean;
+    multiAgent: boolean;
+    providers: string[];
+  };
+  limits: {
+    maxMessageLength: number;
+    maxHistoryLength: number;
+    maxToolIterations: number;
+    rateLimitPerMinute: number;
+  };
 }
